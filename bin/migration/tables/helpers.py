@@ -42,7 +42,6 @@ def check_existing_record(db_connection, table_name, field, record):
 
 # Audit entry into database
 def audit_entry_creation(db_connection, table_name, record_id, record, created_at = None,created_by = None, logger = None ):
-    logger = FailedImportsLogger()
     created_at = created_at if created_at is not None else datetime.now()
     created_by = created_by if created_by is not None else None
 
@@ -75,11 +74,7 @@ def audit_entry_creation(db_connection, table_name, record_id, record, created_a
         db_connection.connection.commit()
 
     except Exception as e:
-        logger.log_failed_imports([{
-            'table_name': 'audits',
-            'table_id': record_id,
-            'details': str(e)
-        }])
+        pass
 
 # Get the user_id associated with an email from the users table for the audits record.
 def get_user_id(db_connection, email):

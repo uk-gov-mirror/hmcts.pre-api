@@ -3,7 +3,6 @@ source_table_queries = {
     'users': "SELECT COUNT(*) FROM public.users",
     'roles': "SELECT COUNT(grouptype) FROM public.grouplist WHERE grouptype = 'Security'",
     'courts': "SELECT COUNT(grouptype) + 1 FROM public.grouplist WHERE grouptype = 'Location'" , # adds 1 for default court
-    'regions': "SELECT 12",
     'cases': "SELECT COUNT(*) FROM public.cases",
     'bookings':"SELECT COUNT(*) FROM public.recordings WHERE parentrecuid = recordinguid and recordingversion = '1'",
     'contacts':  "SELECT COUNT(*) FROM public.contacts",
@@ -11,6 +10,7 @@ source_table_queries = {
     'recordings': "SELECT COUNT(*) FROM public.recordings WHERE recordingstatus !='No Recording' AND (recordingavailable IS NULL OR recordingavailable LIKE 'true')",
     'audits': "SELECT COUNT(*) FROM public.audits",
     'share_bookings': "SELECT COUNT(*) FROM public.videopermissions",
+    
     'portal_access': """SELECT COUNT(*) AS count_result FROM (
                             SELECT
                                 u.userid,
@@ -43,4 +43,30 @@ source_table_queries = {
                         ) AS count"""
 }
 
+logger_queries = {
+    'create_table_query': """CREATE TABLE IF NOT EXISTS public.%s (
+                            id SERIAL PRIMARY KEY,
+                            table_name VARCHAR(255),
+                            table_id UUID,
+                            case_id UUID,
+                            recording_id UUID,
+                            details TEXT,
+                            migrated INT DEFAULT 0
+                        )""",
 
+    'insert_query': """  INSERT INTO public.failed_imports
+                    (table_name, table_id, case_id, recording_id, details)
+                    VALUES (%s, %s, %s, %s, %s)""",
+
+    'update_query': "UPDATE public.failed_imports SET migrated = 1 WHERE table_name = %s AND id = %s",
+
+    'existing_record_query': """SELECT EXISTS (SELECT 1 FROM public.failed_imports 
+                            WHERE table_name = %s AND table_id = %s AND case_id = %s AND recording_id = %s)""",
+
+    'failed_migration_record_query': "SELECT * FROM public.failed_imports WHERE migrated = 0"
+}
+
+migration_tracker_queries = {
+    'count_audit_records_query' : "SELECT COUNT(*) FROM public.audits WHERE table_name != 'audits'",
+    'count_failed_migrations_query' : "SELECT COUNT(*) FROM public.failed_imports"
+}

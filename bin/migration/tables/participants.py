@@ -23,7 +23,7 @@ class ParticipantManager:
 
             if p_type is None:
                 self.failed_imports.append({
-                    'table_name': 'contacts',
+                    'table_name': 'participants',
                     'table_id': id,
                     'case_id': case_id,
                     'details': f'No participant type detail associated with participant: {id}'
@@ -37,7 +37,7 @@ class ParticipantManager:
 
             if not case_id_exists:
                 self.failed_imports.append({
-                    'table_name': 'contacts',
+                    'table_name': 'participants',
                     'table_id': id,
                     'case_id': case_id,
                     'details': f'Invalid Case ID: {case_id} associated with participant: {id}'
@@ -48,7 +48,7 @@ class ParticipantManager:
                 participant_type = p_type.upper()
                 if participant_type not in ('WITNESS', 'DEFENDANT'):
                     self.failed_imports.append({
-                        'table_name': 'contacts',
+                        'table_name': 'participants',
                         'table_id': id,
                         'case_id': case_id,
                         'details': f'Invalid participant type: {p_type}.'
@@ -65,7 +65,7 @@ class ParticipantManager:
 
                 if first_name is None or last_name is None:
                     self.failed_imports.append({
-                        'table_name': 'contacts',
+                        'table_name': 'participants',
                         'table_id': id,
                         'case_id': case_id,
                         'details': f'Participant is missing first / last name - first name: {first_name} last name: {last_name}'
@@ -105,6 +105,6 @@ class ParticipantManager:
 
         except Exception as e:
             self.failed_imports.append(
-                {'table_name': 'contacts', 'table_id': id, 'details': str(e)})
+                {'table_name': 'participants', 'table_id': id, 'details': str(e)})
 
         self.logger.log_failed_imports(self.failed_imports)
