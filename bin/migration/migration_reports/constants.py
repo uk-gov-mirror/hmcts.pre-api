@@ -1,5 +1,5 @@
 table_mapping = {
-    'rooms': 'rooms',
+    'rooms': 'virtual_conference_rooms',
     'users': 'users',
     'roles': 'roles',
     'courts': 'courts',

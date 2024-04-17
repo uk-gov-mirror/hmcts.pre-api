@@ -1,5 +1,4 @@
-from .helpers import check_existing_record,  audit_entry_creation 
-
+from .helpers import check_existing_record 
 
 class UserCourtManager:
     def __init__(self, source_cursor, logger):
@@ -7,11 +6,6 @@ class UserCourtManager:
         self.failed_imports = []
         self.logger = logger
 
-    # def get_data(self):
-    #     pass
-
-#  user_id, court_id, role_id
-        
     def get_app_access_data(self, destination_cursor):
         query = "SELECT id,court_id,role_id FROM public.app_access"
         destination_cursor.execute(query)
@@ -26,12 +20,11 @@ class UserCourtManager:
             court_id = data[1]
             role_id = data[2]
             default_court = False
-            print(user_id, court_id)
+
             if not check_existing_record(destination_cursor, 'user_court', 'user_id', user_id):
                 batch_user_court_data.append((user_id, court_id,default_court,role_id))
         
         if batch_user_court_data:
-            # print
             try:
                 destination_cursor.executemany(
                     """
@@ -46,5 +39,6 @@ class UserCourtManager:
             except Exception as e:
                 self.failed_imports.append({'table_name': 'user_court', 'table_id': None, 'details': str(e)})
 
-        self.logger.log_failed_imports(self.failed_imports) 
+        if self.logger:
+            self.logger.log_failed_imports(self.failed_imports) 
                 
