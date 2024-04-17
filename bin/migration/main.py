@@ -7,7 +7,6 @@ from tables.rooms import RoomManager
 from tables.users import UserManager
 from tables.roles import RoleManager
 from tables.courts import CourtManager
-from tables.courtrooms import CourtRoomManager
 from tables.regions import RegionManager
 from tables.courtregions import CourtRegionManager
 from tables.portalaccess import PortalAccessManager
@@ -19,6 +18,7 @@ from tables.bookingparticipants import BookingParticipantManager
 from tables.capturesessions import CaptureSessionManager
 from tables.recordings import RecordingManager
 from tables.sharebookings import ShareBookingsManager
+from tables.usercourt import UserCourtManager
 from tables.audits import AuditLogManager
 
 from migration_reports.migration_tracker import MigrationTracker
@@ -88,22 +88,18 @@ room_manager = RoomManager(source_db.connection.cursor(), logger)
 user_manager = UserManager(source_db.connection.cursor(), logger)
 role_manager = RoleManager(source_db.connection.cursor(), logger)
 court_manager = CourtManager(source_db.connection.cursor(), logger)
-courtroom_manager = CourtRoomManager(logger)
+user_court_manager = UserCourtManager(source_db.connection.cursor(),logger)
 region_manager = RegionManager(logger)
 court_region_manager = CourtRegionManager(logger)
-portal_access_manager = PortalAccessManager(
-    source_db.connection.cursor(), logger)
+portal_access_manager = PortalAccessManager(source_db.connection.cursor(), logger)
 app_access_manager = AppAccessManager(source_db.connection.cursor(), logger)
 case_manager = CaseManager(source_db.connection.cursor(), logger)
 booking_manager = BookingManager(source_db.connection.cursor(), logger)
 participant_manager = ParticipantManager(source_db.connection.cursor(), logger)
-booking_participant_manager = BookingParticipantManager(
-    source_db.connection.cursor(), logger)
-capture_session_manager = CaptureSessionManager(
-    source_db.connection.cursor(), logger)
+booking_participant_manager = BookingParticipantManager(source_db.connection.cursor(), logger)
+capture_session_manager = CaptureSessionManager(source_db.connection.cursor(), logger)
 recording_manager = RecordingManager(source_db.connection.cursor(), logger)
-share_bookings_manager = ShareBookingsManager(
-    source_db.connection.cursor(), logger)
+share_bookings_manager = ShareBookingsManager(source_db.connection.cursor(), logger)
 audit_log_manager = AuditLogManager(source_db.connection.cursor(), logger)
 
 
@@ -119,11 +115,11 @@ def main():
     migrate_manager_data(user_manager, destination_db_cursor)
     migrate_manager_data(role_manager, destination_db_cursor)
     migrate_manager_data(court_manager, destination_db_cursor)
-    migrate_manager_data(courtroom_manager, destination_db_cursor)
     migrate_manager_data(region_manager, destination_db_cursor)
     migrate_manager_data(court_region_manager, destination_db_cursor)
     migrate_manager_data(portal_access_manager, destination_db_cursor)
     migrate_manager_data(app_access_manager, destination_db_cursor)
+    migrate_manager_data(user_court_manager, destination_db_cursor)
     migrate_manager_data(case_manager, destination_db_cursor)
     migrate_manager_data(booking_manager, destination_db_cursor)
     migrate_manager_data(participant_manager, destination_db_cursor)

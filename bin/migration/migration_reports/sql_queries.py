@@ -1,5 +1,5 @@
 source_table_queries = {
-    'rooms': "SELECT COUNT(*) FROM public.rooms",
+    'virtual_conference_rooms': "SELECT COUNT(*) FROM public.rooms",
     'users': "SELECT COUNT(*) FROM public.users",
     'roles': "SELECT COUNT(grouptype) FROM public.grouplist WHERE grouptype = 'Security'",
     'courts': "SELECT COUNT(grouptype) + 1 FROM public.grouplist WHERE grouptype = 'Location'" , # adds 1 for default court
