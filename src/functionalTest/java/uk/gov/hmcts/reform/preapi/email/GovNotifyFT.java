@@ -81,7 +81,7 @@ public class GovNotifyFT {
     }
 
     private void compareBody(String expected, EmailResponse emailResponse) {
-        String actualUnix = emailResponse.getBody().replace("\r\n", "\n").replace("\s\n", "\n");
+        String actualUnix = emailResponse.getBody().replace("\r\n", "\n");
         assertEquals(expected, actualUnix);
     }
 
@@ -276,11 +276,11 @@ public class GovNotifyFT {
             Witness name: First
             Defendant name(s): First Last
 
-            Edit 1:
+            Edit 1:\s
             Start time: 00:00:00
             End time: 00:00:30
             Time Removed: 00:00:00
-            Reason:
+            Reason:\s
 
 
             Edits have been jointly agreed: Yes
@@ -310,11 +310,11 @@ public class GovNotifyFT {
             Witness name: First
             Defendant name(s): First Last
 
-            Edit 1:
+            Edit 1:\s
             Start time: 00:00:00
             End time: 00:00:30
             Time Removed: 00:00:00
-            Reason:
+            Reason:\s
 
 
             Edits have been jointly agreed: No
@@ -348,11 +348,11 @@ public class GovNotifyFT {
             Witness name: First
             Defendant name(s): First Last
 
-            Edit 1:
+            Edit 1:\s
             Start time: 00:00:00
             End time: 00:00:30
             Time Removed: 00:00:00
-            Reason:
+            Reason:\s
 
 
             Edits have been jointly agreed: Yes
